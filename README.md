@@ -82,7 +82,7 @@ All UI components are built manually with Tailwind CSS — no third-party compon
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone git@github.com:fernandes5000/text-message-management.git
 cd text-message-management
 
 # Copy environment file
