@@ -40,14 +40,14 @@
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <span>{{ $t('common.search') }} everything...</span>
+                    <span>{{ $t('common.search_placeholder') }}</span>
                     <kbd class="rounded border px-1 text-xs dark:border-gray-600">⌘K</kbd>
                 </div>
 
                 <div class="flex items-center gap-4">
                     <!-- Credits -->
                     <span class="text-sm text-gray-600 dark:text-gray-400">
-                        Credits: <strong>{{ auth.organization?.credits?.toLocaleString() ?? '—' }}</strong>
+                        {{ $t('common.credits') }}: <strong>{{ auth.organization?.credits?.toLocaleString() ?? '—' }}</strong>
                     </span>
 
                     <!-- Account switcher -->

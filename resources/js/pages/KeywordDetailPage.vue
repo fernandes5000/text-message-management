@@ -27,7 +27,7 @@
                             : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'"
                         class="rounded-full px-2.5 py-0.5 text-xs font-medium"
                     >
-                        {{ keyword.status }}
+                        {{ keyword.status === 'active' ? $t('keywords.active') : $t('keywords.archived') }}
                     </span>
                 </div>
                 <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
@@ -43,10 +43,10 @@
                     class="rounded-lg border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                     @click="openSettings = true"
                 >
-                    Settings
+                    {{ $t('keywords.settings') }}
                 </button>
                 <UiButton :disabled="saving" @click="saveWorkflow">
-                    {{ saving ? 'Saving...' : 'Save Workflow' }}
+                    {{ saving ? $t('common.saving') : $t('keywords.save_workflow') }}
                 </UiButton>
             </div>
         </div>
@@ -72,7 +72,7 @@
             <div class="border-b px-5 py-4 dark:border-gray-700">
                 <h2 class="font-semibold text-gray-900 dark:text-white">{{ $t('keywords.workflow') }}</h2>
                 <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
-                    These steps run automatically when someone texts this keyword.
+                    {{ $t('keywords.workflow_subtitle') }}
                 </p>
             </div>
 
@@ -84,8 +84,8 @@
                         <div v-if="workflow.length > 0" class="mt-1 w-px flex-1 bg-gray-200 dark:bg-gray-700" style="min-height:24px" />
                     </div>
                     <div class="flex-1 rounded-lg border border-primary-200 bg-primary-50 p-3 dark:border-primary-800 dark:bg-primary-900/20">
-                        <p class="text-sm font-medium text-primary-800 dark:text-primary-300">Trigger: Inbound SMS</p>
-                        <p class="mt-0.5 text-xs text-primary-600 dark:text-primary-400">Someone texts <strong>{{ keyword.name }}</strong> to {{ keyword.number || 'your number' }}</p>
+                        <p class="text-sm font-medium text-primary-800 dark:text-primary-300">{{ $t('keywords.triggers') }}: Inbound SMS</p>
+                        <p class="mt-0.5 text-xs text-primary-600 dark:text-primary-400">{{ $t('keywords.trigger_description', { keyword: keyword.name, number: keyword.number || $t('keywords.your_number') }) }}</p>
                     </div>
                 </div>
 
@@ -111,9 +111,9 @@
                                 class="rounded border px-2 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white"
                                 @change="onStepTypeChange(step)"
                             >
-                                <option value="send_message">Send Message</option>
-                                <option value="add_to_list">Add to List</option>
-                                <option value="collect_info">Collect Info</option>
+                                <option value="send_message">{{ $t('keywords.step_send_message') }}</option>
+                                <option value="add_to_list">{{ $t('keywords.step_add_to_list') }}</option>
+                                <option value="collect_info">{{ $t('keywords.step_collect_info') }}</option>
                             </select>
                             <button
                                 class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-600"
@@ -127,13 +127,13 @@
 
                         <!-- send_message config -->
                         <div v-if="step.type === 'send_message'">
-                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Auto-reply message</label>
+                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">{{ $t('keywords.step_send_message') }}</label>
                             <textarea
                                 :value="step.config.message as string"
                                 rows="3"
                                 maxlength="320"
                                 @input="step.config.message = ($event.target as HTMLTextAreaElement).value"
-                                placeholder="Thanks for texting! You've been opted in."
+                                :placeholder="$t('keywords.default_message_placeholder')"
                                 class="w-full resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             />
                             <p class="mt-1 text-right text-xs text-gray-400">{{ (step.config.message as string ?? '').length }}/320</p>
@@ -141,7 +141,7 @@
 
                         <!-- add_to_list config -->
                         <div v-else-if="step.type === 'add_to_list'">
-                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Select list</label>
+                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">{{ $t('keywords.select_list') }}</label>
                             <select
                                 :value="step.config.list_id as string | number | null"
                                 @change="step.config.list_id = ($event.target as HTMLSelectElement).value || null"
@@ -156,21 +156,21 @@
 
                         <!-- collect_info config -->
                         <div v-else-if="step.type === 'collect_info'">
-                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Question to ask</label>
+                            <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">{{ $t('keywords.question_to_ask') }}</label>
                             <input
                                 v-model="step.config.question"
                                 type="text"
-                                placeholder="What is your first name?"
+                                :placeholder="$t('keywords.default_question_placeholder')"
                                 class="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white"
                             />
-                            <label class="mb-1 mt-2 block text-xs font-medium text-gray-500 dark:text-gray-400">Save response as</label>
+                            <label class="mb-1 mt-2 block text-xs font-medium text-gray-500 dark:text-gray-400">{{ $t('keywords.save_as') }}</label>
                             <select
                                 v-model="step.config.field"
                                 class="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white"
                             >
-                                <option value="first_name">First name</option>
-                                <option value="last_name">Last name</option>
-                                <option value="email">Email</option>
+                                <option value="first_name">{{ $t('keywords.save_as_first_name') }}</option>
+                                <option value="last_name">{{ $t('keywords.save_as_last_name') }}</option>
+                                <option value="email">{{ $t('keywords.save_as_email') }}</option>
                             </select>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        Add Step
+                        {{ $t('keywords.add_step') }}
                     </button>
                 </div>
             </div>
@@ -204,7 +204,7 @@
         >
             <div class="flex h-full w-full max-w-sm flex-col bg-white shadow-xl dark:bg-gray-900">
                 <div class="flex items-center justify-between border-b px-5 py-4 dark:border-gray-700">
-                    <h2 class="font-semibold text-gray-900 dark:text-white">Keyword Settings</h2>
+                    <h2 class="font-semibold text-gray-900 dark:text-white">{{ $t('keywords.settings') }}</h2>
                     <button class="rounded p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" @click="openSettings = false">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -213,7 +213,7 @@
                 </div>
                 <div class="flex-1 space-y-4 overflow-y-auto p-5">
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Keyword Name</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('keywords.keyword_name') }}</label>
                         <input
                             v-model="settings.name"
                             type="text"
@@ -235,11 +235,11 @@
                             <input
                                 v-model="aliasInput"
                                 type="text"
-                                placeholder="Add alias..."
+                                :placeholder="$t('keywords.add_alias')"
                                 class="flex-1 rounded-lg border px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 @keydown.enter.prevent="addSettingsAlias"
                             />
-                            <button class="rounded-lg border px-3 py-2 text-sm dark:border-gray-600 dark:text-gray-300" @click="addSettingsAlias">Add</button>
+                            <button class="rounded-lg border px-3 py-2 text-sm dark:border-gray-600 dark:text-gray-300" @click="addSettingsAlias">{{ $t('common.add') }}</button>
                         </div>
                         <div v-if="settings.aliases.length > 0" class="mt-2 flex flex-wrap gap-1">
                             <span
@@ -253,7 +253,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Target {{ $t('keywords.lists') }}</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('keywords.lists') }}</label>
                         <div class="space-y-1.5 rounded-lg border p-3 dark:border-gray-600">
                             <label
                                 v-for="list in lists"
@@ -278,7 +278,7 @@
                         :disabled="saving"
                         @click="saveSettings"
                     >
-                        {{ saving ? 'Saving...' : $t('common.save') }}
+                        {{ saving ? $t('common.saving') : $t('common.save') }}
                     </button>
                 </div>
             </div>

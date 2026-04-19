@@ -4,9 +4,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $t('keywords.title') }}</h1>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Manage opt-in keywords and their automated reply workflows.
-                </p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $t('keywords.subtitle') }}</p>
             </div>
             <UiButton @click="openModal()">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +106,7 @@
 
                 <!-- Workflow summary -->
                 <div class="mb-4 text-xs text-gray-400">
-                    {{ kw.workflow.length }} workflow step{{ kw.workflow.length !== 1 ? 's' : '' }}
+                    {{ $t('keywords.workflow_steps', { n: kw.workflow.length }) }}
                 </div>
 
                 <!-- Actions -->
@@ -117,13 +115,13 @@
                         :to="`/keywords/${kw.id}`"
                         class="flex-1 rounded-lg border px-3 py-1.5 text-center text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
-                        Edit Workflow
+                        {{ $t('keywords.edit_workflow') }}
                     </RouterLink>
                     <button
                         class="rounded-lg border px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
                         @click="toggleArchive(kw)"
                     >
-                        {{ kw.status === 'active' ? $t('keywords.archived') : $t('keywords.active') }}
+                        {{ kw.status === 'active' ? $t('keywords.archive') : $t('keywords.unarchive') }}
                     </button>
                     <button
                         class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 dark:border-red-900/40 dark:text-red-400 dark:hover:bg-red-900/20"
@@ -138,19 +136,19 @@
         <!-- Pagination -->
         <div v-if="meta.last_page > 1" class="flex items-center justify-between">
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Page {{ meta.current_page }} of {{ meta.last_page }}
+                {{ $t('common.page_of', { current: meta.current_page, total: meta.last_page }) }}
             </p>
             <div class="flex gap-2">
                 <button
                     :disabled="meta.current_page === 1"
                     class="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
                     @click="changePage(meta.current_page - 1)"
-                >Prev</button>
+                >{{ $t('common.prev') }}</button>
                 <button
                     :disabled="meta.current_page === meta.last_page"
                     class="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
                     @click="changePage(meta.current_page + 1)"
-                >Next</button>
+                >{{ $t('common.next') }}</button>
             </div>
         </div>
     </div>
@@ -174,7 +172,7 @@
 
                 <div class="space-y-4 p-5">
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Keyword</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('keywords.keyword_label') }}</label>
                         <input
                             v-model="form.name"
                             type="text"
@@ -200,14 +198,14 @@
                             <input
                                 v-model="aliasInput"
                                 type="text"
-                                placeholder="Add alias..."
+                                :placeholder="$t('keywords.add_alias')"
                                 class="flex-1 rounded-lg border px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 @keydown.enter.prevent="addAlias"
                             />
                             <button
                                 class="rounded-lg border px-3 py-2 text-sm dark:border-gray-600 dark:text-gray-300"
                                 @click="addAlias"
-                            >Add</button>
+                            >{{ $t('common.add') }}</button>
                         </div>
                         <div v-if="form.aliases.length > 0" class="mt-2 flex flex-wrap gap-1">
                             <span
@@ -232,7 +230,7 @@
                         :disabled="!form.name.trim() || saving"
                         @click="createKeyword"
                     >
-                        {{ saving ? 'Creating...' : $t('keywords.create') }}
+                        {{ saving ? $t('common.saving') : $t('keywords.create') }}
                     </button>
                 </div>
             </div>
@@ -265,7 +263,7 @@ const aliasInput = ref('')
 const tabs = [
     { value: 'active',   label: t('keywords.active') },
     { value: 'archived', label: t('keywords.archived') },
-    { value: '',         label: 'All' },
+    { value: '',         label: t('common.all') },
 ]
 
 const defaultForm = () => ({ name: '', number: '', aliases: [] as string[] })

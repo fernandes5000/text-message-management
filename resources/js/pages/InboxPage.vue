@@ -92,7 +92,7 @@
                     <button
                         class="w-full rounded-lg border py-2 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
                         @click="loadMore"
-                    >Load more</button>
+                    >{{ $t('inbox.load_more') }}</button>
                 </div>
             </div>
         </aside>
@@ -105,7 +105,7 @@
                     <svg class="mx-auto mb-3 h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
-                    <p class="text-sm">Select a conversation to start</p>
+                    <p class="text-sm">{{ $t('inbox.select_conversation') }}</p>
                 </div>
             </div>
 
@@ -192,7 +192,7 @@
                             </svg>
                         </button>
                     </div>
-                    <p class="mt-1 text-[10px] text-gray-400">Ctrl+Enter to send</p>
+                    <p class="mt-1 text-[10px] text-gray-400">{{ $t('inbox.ctrl_enter_hint') }}</p>
                 </div>
             </template>
         </div>
@@ -207,7 +207,7 @@ import type { Conversation, ConversationMessage } from '@/types'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const auth = useAuthStore()
 const toast = useToastStore()
 
@@ -227,7 +227,7 @@ const messagesEl = ref<HTMLElement | null>(null)
 
 const tabs = [
     { value: 'open', label: t('inbox.open') },
-    { value: '',     label: 'All' },
+    { value: '',     label: t('common.all') },
     { value: 'done', label: t('inbox.done') },
 ]
 
@@ -358,7 +358,7 @@ function relativeTime(iso: string | null): string {
 }
 
 function formatTime(iso: string): string {
-    return new Date(iso).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+    return new Date(iso).toLocaleTimeString(locale.value, { hour: '2-digit', minute: '2-digit' })
 }
 
 function scrollToBottom() {

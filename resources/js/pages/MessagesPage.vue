@@ -4,9 +4,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $t('messages.title') }}</h1>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Compose, schedule, and manage your SMS campaigns.
-                </p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $t('messages.subtitle') }}</p>
             </div>
             <UiButton @click="openComposer()">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,10 +70,10 @@
             <table v-else class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-900/50">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Name</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Status</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Recipients</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Date</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $t('common.name') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $t('common.status') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $t('messages.recipients') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $t('common.date') }}</th>
                         <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $t('common.actions') }}</th>
                     </tr>
                 </thead>
@@ -111,7 +109,7 @@
                                     class="rounded px-2 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 dark:text-primary-400 dark:hover:bg-primary-900/20"
                                     @click="sendNow(msg)"
                                 >
-                                    Send Now
+                                    {{ $t('messages.send_now') }}
                                 </button>
                                 <button
                                     v-if="msg.status === 'draft'"
@@ -134,7 +132,7 @@
 
             <div v-if="meta.last_page > 1" class="flex items-center justify-between border-t px-4 py-3 dark:border-gray-700">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Page {{ meta.current_page }} of {{ meta.last_page }}
+                    {{ $t('common.page_of', { current: meta.current_page, total: meta.last_page }) }}
                 </p>
                 <div class="flex gap-2">
                     <button
@@ -142,14 +140,14 @@
                         class="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
                         @click="changePage(meta.current_page - 1)"
                     >
-                        Prev
+                        {{ $t('common.prev') }}
                     </button>
                     <button
                         :disabled="meta.current_page === meta.last_page"
                         class="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
                         @click="changePage(meta.current_page + 1)"
                     >
-                        Next
+                        {{ $t('common.next') }}
                     </button>
                 </div>
             </div>
@@ -166,7 +164,7 @@
             <div class="flex h-full w-full max-w-xl flex-col bg-white shadow-xl dark:bg-gray-900">
                 <div class="flex items-center justify-between border-b px-6 py-4 dark:border-gray-700">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        {{ editingMessage ? 'Edit Message' : $t('messages.create') }}
+                        {{ editingMessage ? $t('messages.edit') : $t('messages.create') }}
                     </h2>
                     <button class="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" @click="composerOpen = false">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +176,7 @@
                 <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
                     <!-- Name -->
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Name</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('messages.campaign_name') }}</label>
                         <input
                             v-model="form.name"
                             type="text"
@@ -202,7 +200,7 @@
                     <div>
                         <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('messages.to') }}</label>
                         <div class="space-y-1.5 rounded-lg border p-3 dark:border-gray-600">
-                            <p v-if="lists.length === 0" class="text-sm text-gray-400">Loading lists...</p>
+                            <p v-if="lists.length === 0" class="text-sm text-gray-400">{{ $t('messages.loading_lists') }}</p>
                             <label
                                 v-for="list in lists"
                                 :key="list.id"
@@ -219,7 +217,7 @@
                             </label>
                         </div>
                         <p class="mt-1 text-xs text-gray-400">
-                            Est. recipients: <strong>{{ estimatedRecipients.toLocaleString() }}</strong>
+                            {{ $t('messages.est_recipients') }}: <strong>{{ estimatedRecipients.toLocaleString() }}</strong>
                         </p>
                     </div>
 
@@ -246,7 +244,7 @@
                         <input
                             v-model="form.header"
                             type="text"
-                            placeholder="Message header text"
+                            :placeholder="$t('messages.header_placeholder')"
                             maxlength="100"
                             class="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                         />
@@ -254,7 +252,7 @@
 
                     <!-- Body -->
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('messages.message_label') }}</label>
                         <textarea
                             v-model="form.body"
                             rows="5"
@@ -263,7 +261,7 @@
                             class="w-full resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
                         />
                         <div class="mt-1 flex justify-between text-xs text-gray-400">
-                            <span>{{ smsSegments }} segment{{ smsSegments !== 1 ? 's' : '' }}</span>
+                            <span>{{ smsSegments }} {{ $t('common.segments').toLowerCase() }}</span>
                             <span>{{ form.body.length }}/1600</span>
                         </div>
                     </div>
@@ -289,7 +287,7 @@
                     </div>
 
                     <div v-if="form.send_type === 'scheduled'">
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Send Date & Time</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('messages.send_date_time') }}</label>
                         <input
                             v-model="form.scheduled_at"
                             type="datetime-local"
@@ -299,14 +297,14 @@
                     </div>
 
                     <div v-if="form.send_type === 'recurring'">
-                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Recurrence</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('messages.recurrence') }}</label>
                         <select
                             v-model="form.recurrence"
                             class="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                         >
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
+                            <option value="daily">{{ $t('messages.recurrence_daily') }}</option>
+                            <option value="weekly">{{ $t('messages.recurrence_weekly') }}</option>
+                            <option value="monthly">{{ $t('messages.recurrence_monthly') }}</option>
                         </select>
                     </div>
                 </div>
@@ -321,7 +319,7 @@
                                     <p class="mb-1 text-center text-[9px] text-gray-400">{{ form.from_number || '+1 (555) 000-0000' }}</p>
                                     <div class="rounded-xl bg-gray-600 p-2">
                                         <p v-if="form.use_header && form.header" class="mb-1 text-[9px] font-bold text-white">{{ form.header }}</p>
-                                        <p class="text-[9px] leading-relaxed text-white">{{ form.body || 'Your message preview...' }}</p>
+                                        <p class="text-[9px] leading-relaxed text-white">{{ form.body || $t('messages.preview_placeholder') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +333,7 @@
                                     <span class="ml-1">{{ estimatedCredits.toLocaleString() }}</span>
                                 </div>
                                 <div>
-                                    <span class="font-medium text-gray-700 dark:text-gray-200">Segments:</span>
+                                    <span class="font-medium text-gray-700 dark:text-gray-200">{{ $t('common.segments') }}:</span>
                                     <span class="ml-1">{{ smsSegments }}</span>
                                 </div>
                             </div>
@@ -355,7 +353,7 @@
                             :disabled="saving || !form.name || !form.body"
                             @click="submitForm"
                         >
-                            <span v-if="saving">Sending...</span>
+                            <span v-if="saving">{{ $t('common.sending') }}</span>
                             <span v-else-if="form.send_type === 'now'">{{ $t('messages.send_now') }}</span>
                             <span v-else>{{ $t('common.save') }}</span>
                         </button>
@@ -374,7 +372,7 @@ import type { Message, SubscriberList } from '@/types'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useToastStore } from '@/stores/toast'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToastStore()
 
 const messages = ref<Message[]>([])
@@ -389,10 +387,10 @@ const page = ref(1)
 const meta = ref({ current_page: 1, last_page: 1, per_page: 20, total: 0 })
 
 const tabs = [
-    { value: 'all',       label: 'All' },
+    { value: 'all',       label: t('common.all') },
     { value: 'draft',     label: t('messages.drafts') },
     { value: 'scheduled', label: t('messages.scheduled') },
-    { value: 'sent',      label: 'Sent' },
+    { value: 'sent',      label: t('messages.sent') },
 ]
 
 const sendTypeOptions: { value: 'now' | 'scheduled' | 'recurring'; label: string }[] = [
@@ -416,9 +414,9 @@ const defaultForm = () => ({
 const form = ref(defaultForm())
 
 const stats = computed(() => [
-    { label: 'Total Sent',            value: messages.value.filter(m => m.status === 'sent').length.toLocaleString() },
-    { label: t('messages.scheduled'), value: messages.value.filter(m => m.status === 'scheduled').length.toLocaleString() },
-    { label: t('messages.drafts'),    value: messages.value.filter(m => m.status === 'draft').length.toLocaleString() },
+    { label: t('messages.total_sent'), value: messages.value.filter(m => m.status === 'sent').length.toLocaleString() },
+    { label: t('messages.scheduled'),  value: messages.value.filter(m => m.status === 'scheduled').length.toLocaleString() },
+    { label: t('messages.drafts'),     value: messages.value.filter(m => m.status === 'draft').length.toLocaleString() },
 ])
 
 const estimatedRecipients = computed(() =>
@@ -565,7 +563,11 @@ async function deleteMessage(msg: Message) {
 
 function statusLabel(status: string): string {
     const map: Record<string, string> = {
-        draft: 'Draft', scheduled: 'Scheduled', sending: 'Sending', sent: 'Sent', failed: 'Failed',
+        draft:     t('messages.status_draft'),
+        scheduled: t('messages.status_scheduled'),
+        sending:   t('messages.status_sending'),
+        sent:      t('messages.status_sent'),
+        failed:    t('messages.status_failed'),
     }
     return map[status] ?? status
 }
@@ -583,7 +585,7 @@ function statusClass(status: string): string {
 
 function formatDate(iso: string | null): string {
     if (!iso) return '—'
-    return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+    return new Date(iso).toLocaleDateString(locale.value, { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 onMounted(() => {

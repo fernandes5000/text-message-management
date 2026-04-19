@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             KeywordSeeder::class,
             InboxSeeder::class,
+            PollSeeder::class,
+            IntegrationSeeder::class,
         ]);
     }
 }
