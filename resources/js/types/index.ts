@@ -4,6 +4,7 @@ export interface User {
     email: string
     locale: string
     theme: 'light' | 'dark'
+    active_organization_id: number
 }
 
 export interface Organization {
