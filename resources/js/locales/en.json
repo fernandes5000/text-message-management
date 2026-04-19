@@ -1,0 +1,124 @@
+{
+    "app": {
+        "name": "Text Message Management",
+        "demo_badge": "DEMO",
+        "demo_notice": "This is a demo system. No real SMS messages are sent."
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "inbox": "Inbox",
+        "subscribers": "Subscribers",
+        "messages": "Messages",
+        "keywords": "Keywords",
+        "polls": "Polls",
+        "integrations": "Integrations"
+    },
+    "auth": {
+        "sign_in": "Sign In",
+        "sign_out": "Sign Out",
+        "email": "Email address",
+        "password": "Password",
+        "remember_me": "Remember me",
+        "forgot_password": "Forgot your password?",
+        "signing_in": "Signing in..."
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "search": "Search",
+        "loading": "Loading...",
+        "no_results": "No results found.",
+        "confirm_delete": "Are you sure you want to delete this?",
+        "view_all": "View All",
+        "actions": "Actions",
+        "status": "Status",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Date",
+        "close": "Close"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "overall_performance": "Overall Account Performance",
+        "subscriber_sources": "Subscriber Sources",
+        "recently_sent": "Recently Sent Messages",
+        "total_subscribers": "Total Subscribers",
+        "opt_ins": "Opt-ins",
+        "opt_outs": "Opt-outs",
+        "outgoing_texts": "Outgoing Texts",
+        "incoming_texts": "Incoming Texts",
+        "periods": {
+            "1w": "1W",
+            "1m": "1M",
+            "6m": "6M",
+            "1y": "1Y"
+        }
+    },
+    "subscribers": {
+        "title": "Subscribers",
+        "add": "Add Subscribers",
+        "import_csv": "Import CSV/Excel",
+        "add_manually": "Add manually",
+        "opted_in": "Opted In",
+        "opted_out": "Opted Out",
+        "lists": "Lists",
+        "weekly_growth": "Weekly Growth",
+        "last_synced": "Last synced {time} ago",
+        "sync_now": "Sync now",
+        "create_list": "Create New List"
+    },
+    "messages": {
+        "title": "Messages",
+        "create": "Create Message",
+        "send_now": "Send Now",
+        "send_later": "Send later",
+        "recurring": "Recurring",
+        "preview": "Preview Message",
+        "save_draft": "Save as Draft",
+        "type_message": "Type your message...",
+        "recipients": "Recipients",
+        "credits_required": "Credits Required",
+        "scheduled": "Scheduled",
+        "drafts": "Drafts",
+        "use_header": "Use Header",
+        "from": "From",
+        "to": "To",
+        "schedule": "Schedule"
+    },
+    "keywords": {
+        "title": "Keywords",
+        "create": "Create Keyword",
+        "active": "Active",
+        "archived": "Archived",
+        "uses": "Uses",
+        "opt_ins": "Opt-ins",
+        "workflow": "Keyword Workflow",
+        "aliases": "Aliases",
+        "number": "Number",
+        "triggers": "Triggers",
+        "lists": "List(s)"
+    },
+    "inbox": {
+        "title": "Inbox",
+        "open": "Open",
+        "unread": "Unread",
+        "done": "Done",
+        "compose": "Compose",
+        "reply": "Reply here...",
+        "mark_unread": "Mark Unread",
+        "mark_done": "Mark Done",
+        "search": "Search inbox"
+    },
+    "settings": {
+        "account": "Account Settings",
+        "members": "Team Members",
+        "language": "Language",
+        "theme": "Theme",
+        "dark": "Dark",
+        "light": "Light"
+    }
+}

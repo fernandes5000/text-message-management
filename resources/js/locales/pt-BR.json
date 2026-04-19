@@ -1,0 +1,124 @@
+{
+    "app": {
+        "name": "Text Message Management",
+        "demo_badge": "DEMO",
+        "demo_notice": "Este é um sistema de demonstração. Nenhuma mensagem SMS real é enviada."
+    },
+    "nav": {
+        "dashboard": "Painel",
+        "inbox": "Caixa de Entrada",
+        "subscribers": "Contatos",
+        "messages": "Mensagens",
+        "keywords": "Palavras-chave",
+        "polls": "Enquetes",
+        "integrations": "Integrações"
+    },
+    "auth": {
+        "sign_in": "Entrar",
+        "sign_out": "Sair",
+        "email": "E-mail",
+        "password": "Senha",
+        "remember_me": "Lembrar de mim",
+        "forgot_password": "Esqueceu sua senha?",
+        "signing_in": "Entrando..."
+    },
+    "common": {
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "delete": "Excluir",
+        "edit": "Editar",
+        "create": "Criar",
+        "search": "Buscar",
+        "loading": "Carregando...",
+        "no_results": "Nenhum resultado encontrado.",
+        "confirm_delete": "Tem certeza que deseja excluir?",
+        "view_all": "Ver Todos",
+        "actions": "Ações",
+        "status": "Status",
+        "name": "Nome",
+        "email": "E-mail",
+        "phone": "Telefone",
+        "date": "Data",
+        "close": "Fechar"
+    },
+    "dashboard": {
+        "title": "Painel",
+        "overall_performance": "Desempenho Geral da Conta",
+        "subscriber_sources": "Fontes de Contatos",
+        "recently_sent": "Mensagens Enviadas Recentemente",
+        "total_subscribers": "Total de Contatos",
+        "opt_ins": "Opt-ins",
+        "opt_outs": "Opt-outs",
+        "outgoing_texts": "Textos Enviados",
+        "incoming_texts": "Textos Recebidos",
+        "periods": {
+            "1w": "1S",
+            "1m": "1M",
+            "6m": "6M",
+            "1y": "1A"
+        }
+    },
+    "subscribers": {
+        "title": "Contatos",
+        "add": "Adicionar Contatos",
+        "import_csv": "Importar CSV/Excel",
+        "add_manually": "Adicionar manualmente",
+        "opted_in": "Ativo",
+        "opted_out": "Optou por sair",
+        "lists": "Listas",
+        "weekly_growth": "Crescimento Semanal",
+        "last_synced": "Sincronizado {time} atrás",
+        "sync_now": "Sincronizar agora",
+        "create_list": "Criar Nova Lista"
+    },
+    "messages": {
+        "title": "Mensagens",
+        "create": "Criar Mensagem",
+        "send_now": "Enviar Agora",
+        "send_later": "Enviar depois",
+        "recurring": "Recorrente",
+        "preview": "Visualizar Mensagem",
+        "save_draft": "Salvar Rascunho",
+        "type_message": "Digite sua mensagem...",
+        "recipients": "Destinatários",
+        "credits_required": "Créditos Necessários",
+        "scheduled": "Agendadas",
+        "drafts": "Rascunhos",
+        "use_header": "Usar Cabeçalho",
+        "from": "De",
+        "to": "Para",
+        "schedule": "Agendamento"
+    },
+    "keywords": {
+        "title": "Palavras-chave",
+        "create": "Criar Palavra-chave",
+        "active": "Ativas",
+        "archived": "Arquivadas",
+        "uses": "Usos",
+        "opt_ins": "Opt-ins",
+        "workflow": "Fluxo da Palavra-chave",
+        "aliases": "Aliases",
+        "number": "Número",
+        "triggers": "Gatilhos",
+        "lists": "Lista(s)"
+    },
+    "inbox": {
+        "title": "Caixa de Entrada",
+        "open": "Aberta",
+        "unread": "Não lida",
+        "done": "Concluída",
+        "compose": "Compor",
+        "reply": "Responder aqui...",
+        "mark_unread": "Marcar como não lida",
+        "mark_done": "Marcar como concluída",
+        "search": "Buscar na caixa de entrada"
+    },
+    "settings": {
+        "account": "Configurações da Conta",
+        "members": "Membros da Equipe",
+        "language": "Idioma",
+        "theme": "Tema",
+        "dark": "Escuro",
+        "light": "Claro"
+    }
+}
