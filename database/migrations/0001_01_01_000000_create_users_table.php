@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('locale', 10)->default('en');
+            $table->string('theme', 10)->default('light');
+            $table->unsignedBigInteger('active_organization_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
