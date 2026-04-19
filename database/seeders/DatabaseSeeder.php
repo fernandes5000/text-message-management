@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             SubscriberSeeder::class,
             MessageSeeder::class,
             KeywordSeeder::class,
+            InboxSeeder::class,
         ]);
     }
 }

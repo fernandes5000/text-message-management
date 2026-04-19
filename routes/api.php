@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\KeywordController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ListSubscriberController;
@@ -40,5 +41,12 @@ Route::prefix('v1')->group(function (): void {
 
         // Keywords
         Route::apiResource('keywords', KeywordController::class);
+
+        // Inbox / Conversations
+        Route::get('conversations', [ConversationController::class, 'index']);
+        Route::get('conversations/{conversation}', [ConversationController::class, 'show']);
+        Route::post('conversations/{conversation}/reply', [ConversationController::class, 'reply']);
+        Route::patch('conversations/{conversation}/done', [ConversationController::class, 'markDone']);
+        Route::patch('conversations/{conversation}/unread', [ConversationController::class, 'markUnread']);
     });
 });
