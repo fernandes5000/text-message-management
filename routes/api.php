@@ -5,10 +5,12 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\ConversationController;
+use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\KeywordController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ListSubscriberController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\PollController;
 use App\Http\Controllers\Api\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,5 +50,16 @@ Route::prefix('v1')->group(function (): void {
         Route::post('conversations/{conversation}/reply', [ConversationController::class, 'reply']);
         Route::patch('conversations/{conversation}/done', [ConversationController::class, 'markDone']);
         Route::patch('conversations/{conversation}/unread', [ConversationController::class, 'markUnread']);
+
+        // Polls
+        Route::get('polls', [PollController::class, 'index']);
+        Route::post('polls', [PollController::class, 'store']);
+        Route::get('polls/{poll}', [PollController::class, 'show']);
+        Route::delete('polls/{poll}', [PollController::class, 'destroy']);
+
+        // Integrations
+        Route::get('integrations', [IntegrationController::class, 'index']);
+        Route::post('integrations/{integration}/connect', [IntegrationController::class, 'connect']);
+        Route::post('integrations/{integration}/disconnect', [IntegrationController::class, 'disconnect']);
     });
 });

@@ -74,7 +74,7 @@
             <div class="flex flex-wrap items-center gap-3">
                 <UiInput
                     v-model="search"
-                    placeholder="Search by name, phone..."
+                    :placeholder="$t('subscribers.search_placeholder')"
                     class="w-64"
                 >
                     <template #leading>
@@ -88,7 +88,7 @@
                     v-model="statusFilter"
                     class="rounded-lg border px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 >
-                    <option value="">All statuses</option>
+                    <option value="">{{ $t('subscribers.all_statuses') }}</option>
                     <option value="opted_in">{{ $t('subscribers.opted_in') }}</option>
                     <option value="opted_out">{{ $t('subscribers.opted_out') }}</option>
                 </select>
@@ -112,7 +112,7 @@
                                 {{ $t('common.status') }}
                             </th>
                             <th class="hidden px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 lg:table-cell">
-                                Source
+                                {{ $t('common.source') }}
                             </th>
                             <th class="hidden px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 lg:table-cell">
                                 {{ $t('common.date') }}
@@ -153,7 +153,7 @@
                                 </UiBadge>
                             </td>
                             <td class="hidden px-4 py-3 lg:table-cell">
-                                <span class="text-sm capitalize text-gray-500 dark:text-gray-400">{{ sub.source }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">{{ sourceLabel(sub.source) }}</span>
                             </td>
                             <td class="hidden px-4 py-3 lg:table-cell">
                                 <span class="text-sm text-gray-500 dark:text-gray-400">
@@ -195,7 +195,7 @@
             <!-- Pagination -->
             <div v-if="meta.last_page > 1" class="flex items-center justify-between">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Showing {{ (meta.current_page - 1) * meta.per_page + 1 }}–{{ Math.min(meta.current_page * meta.per_page, meta.total) }} of {{ meta.total.toLocaleString() }}
+                    {{ $t('common.showing_range', { from: (meta.current_page - 1) * meta.per_page + 1, to: Math.min(meta.current_page * meta.per_page, meta.total), total: meta.total.toLocaleString() }) }}
                 </p>
                 <div class="flex gap-1">
                     <UiButton variant="secondary" size="sm" :disabled="meta.current_page === 1" @click="page--">←</UiButton>
@@ -266,13 +266,13 @@
     <!-- Create/Edit Subscriber modal -->
     <UiModal
         v-model="showSubscriberModal"
-        :title="editingSubscriber ? 'Edit Subscriber' : 'Add Subscriber'"
+        :title="editingSubscriber ? $t('subscribers.edit_subscriber') : $t('subscribers.add_subscriber')"
         max-width="sm"
     >
         <form class="space-y-4" @submit.prevent="saveSubscriber">
             <div class="grid grid-cols-2 gap-4">
-                <UiInput v-model="subscriberForm.first_name" label="First Name" required :error="formErrors.first_name" />
-                <UiInput v-model="subscriberForm.last_name" label="Last Name" required :error="formErrors.last_name" />
+                <UiInput v-model="subscriberForm.first_name" :label="$t('common.first_name')" required :error="formErrors.first_name" />
+                <UiInput v-model="subscriberForm.last_name" :label="$t('common.last_name')" required :error="formErrors.last_name" />
             </div>
             <UiInput v-model="subscriberForm.phone" :label="$t('common.phone')" type="tel" required :error="formErrors.phone" />
             <UiInput v-model="subscriberForm.email" :label="$t('common.email')" type="email" :error="formErrors.email" />
@@ -294,12 +294,9 @@
     </UiModal>
 
     <!-- CSV Import modal -->
-    <UiModal v-model="showImport" title="Import Subscribers" max-width="sm">
+    <UiModal v-model="showImport" :title="$t('subscribers.import_subscribers')" max-width="sm">
         <div class="space-y-4">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                Upload a CSV with columns:
-                <code class="rounded bg-gray-100 px-1 py-0.5 text-xs dark:bg-gray-800">first_name, last_name, phone, email, source</code>
-            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('subscribers.csv_instructions') }}</p>
             <label
                 :class="[
                     'flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed px-6 py-8 transition hover:border-primary-400',
@@ -310,13 +307,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
                 <span class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ importFile ? importFile.name : 'Click to select a CSV file' }}
+                    {{ importFile ? importFile.name : $t('subscribers.select_csv') }}
                 </span>
                 <input type="file" accept=".csv,text/csv" class="hidden" @change="onFileChange" />
             </label>
             <div v-if="importResult" class="rounded-lg bg-green-50 p-3 dark:bg-green-900/20">
                 <p class="text-sm font-medium text-green-700 dark:text-green-400">
-                    Imported: {{ importResult.imported }} | Updated: {{ importResult.updated }}
+                    {{ $t('subscribers.import_result', { imported: importResult.imported, updated: importResult.updated }) }}
                 </p>
                 <ul v-if="importResult.errors.length" class="mt-1 space-y-0.5">
                     <li v-for="(err, i) in importResult.errors" :key="i" class="text-xs text-red-600 dark:text-red-400">{{ err }}</li>
@@ -327,7 +324,7 @@
             <UiButton variant="secondary" @click="showImport = false; importFile = null; importResult = null">
                 {{ $t('common.close') }}
             </UiButton>
-            <UiButton :disabled="!importFile" :loading="importing" @click="runImport">Import</UiButton>
+            <UiButton :disabled="!importFile" :loading="importing" @click="runImport">{{ $t('common.import') }}</UiButton>
         </template>
     </UiModal>
 
@@ -343,7 +340,7 @@
     </UiModal>
 
     <!-- Delete Subscriber confirmation -->
-    <UiModal v-model="showDeleteModal" title="Delete Subscriber" max-width="sm">
+    <UiModal v-model="showDeleteModal" :title="$t('subscribers.delete_subscriber')" max-width="sm">
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('common.confirm_delete') }}</p>
         <template #footer>
             <UiButton variant="secondary" @click="showDeleteModal = false">{{ $t('common.cancel') }}</UiButton>
@@ -352,7 +349,7 @@
     </UiModal>
 
     <!-- Delete List confirmation -->
-    <UiModal v-model="showDeleteListModal" title="Delete List" max-width="sm">
+    <UiModal v-model="showDeleteListModal" :title="$t('subscribers.delete_list')" max-width="sm">
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('common.confirm_delete') }}</p>
         <template #footer>
             <UiButton variant="secondary" @click="showDeleteListModal = false">{{ $t('common.cancel') }}</UiButton>
@@ -374,7 +371,7 @@ import UiSpinner from '@/components/ui/UiSpinner.vue'
 import { useToastStore } from '@/stores/toast'
 import type { Subscriber, SubscriberList } from '@/types'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToastStore()
 
 // ── Tabs ──────────────────────────────────────────────────────────────────
@@ -602,6 +599,16 @@ async function deleteList() {
 
 // ── Utilities ─────────────────────────────────────────────────────────────
 function formatDate(iso: string): string {
-    return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+    return new Date(iso).toLocaleDateString(locale.value, { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function sourceLabel(source: string): string {
+    const map: Record<string, string> = {
+        import:  t('subscribers.source_import'),
+        keyword: t('subscribers.source_keyword'),
+        manual:  t('subscribers.source_manual'),
+        api:     t('subscribers.source_api'),
+    }
+    return map[source.toLowerCase()] ?? source
 }
 </script>

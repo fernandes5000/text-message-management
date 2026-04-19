@@ -188,8 +188,9 @@ The database seeder populates realistic demo data:
 - **~15 keywords** (active and archived) with multi-step workflows
 - **~50 messages** (sent, scheduled, and draft)
 - **~20 inbox conversations** with inbound and outbound messages
+- **5 polls** per organization with realistic response distributions
+- **5 mock integrations** per organization (Planning Center, Salesforce, Zapier, Mailchimp, HubSpot)
 - **6 sub-accounts** (College Ministry, Easthill Campus, Guest Assimilation, Jordan's Ministry, Main Campus, Pastor Stephen)
-- **3 mock integrations**
 
 ---
 

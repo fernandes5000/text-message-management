@@ -104,6 +104,19 @@ export interface Poll {
     organization_id: number
     question: string
     options: string[]
+    active: boolean
+    message_id: number | null
+    response_counts: Record<number, number>
+    total_responses: number
+    created_at: string
+}
+
+export interface Integration {
+    id: number
+    organization_id: number
+    type: string
+    status: 'connected' | 'disconnected'
+    config: Record<string, unknown> | null
     created_at: string
 }
 
