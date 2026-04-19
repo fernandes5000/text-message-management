@@ -16,8 +16,12 @@
                     v-for="item in navigation"
                     :key="item.name"
                     :to="item.to"
-                    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
-                    active-class="bg-gray-800 text-white"
+                    :class="[
+                        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                        isNavActive(item.to)
+                            ? 'bg-gray-800 text-white'
+                            : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                    ]"
                 >
                     <component :is="item.icon" class="h-5 w-5 flex-shrink-0" />
                     {{ item.label }}
@@ -102,17 +106,19 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 
 const { t, locale } = useI18n()
 const auth = useAuthStore()
+const route = useRoute()
 
 const showAccountMenu = ref(false)
 const currentLocale = ref(locale.value)
 
-const isDark = computed(() => document.documentElement.classList.contains('dark'))
+// Reactive ref so the icon updates immediately on toggle without needing a DOM read
+const isDark = ref(document.documentElement.classList.contains('dark'))
 
 const userInitials = computed(() => {
     if (!auth.user) return '?'
@@ -134,8 +140,15 @@ const navigation = computed(() => [
     { name: 'integrations', to: '/integrations', label: t('nav.integrations'), icon: 'svg' },
 ])
 
+// Root path uses exact match; all others match by prefix to cover nested routes
+function isNavActive(to: string): boolean {
+    if (to === '/') return route.path === '/'
+    return route.path.startsWith(to)
+}
+
 function toggleTheme() {
     const theme = isDark.value ? 'light' : 'dark'
+    isDark.value = !isDark.value
     auth.setTheme(theme)
 }
 
