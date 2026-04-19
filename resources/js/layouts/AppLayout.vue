@@ -90,17 +90,6 @@
                                     </svg>
                                 </button>
 
-                                <hr class="my-1 border-gray-100 dark:border-gray-700" />
-
-                                <button
-                                    class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
-                                    @click="handleLogout(close)"
-                                >
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                    </svg>
-                                    {{ $t('auth.sign_out') }}
-                                </button>
                             </div>
                         </template>
                     </UiDropdown>
@@ -129,10 +118,35 @@
                         <option value="es">ES</option>
                     </select>
 
-                    <!-- Avatar -->
-                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-sm font-medium text-white">
-                        {{ userInitials }}
-                    </div>
+                    <!-- Avatar dropdown -->
+                    <UiDropdown align="right" width="sm">
+                        <template #trigger="{ toggle }">
+                            <button
+                                class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                                @click="toggle"
+                            >
+                                {{ userInitials }}
+                            </button>
+                        </template>
+
+                        <template #default="{ close }">
+                            <div class="py-1">
+                                <div class="px-3 py-2 border-b border-gray-100 dark:border-gray-700">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ auth.user?.name }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ auth.user?.email }}</p>
+                                </div>
+                                <button
+                                    class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                                    @click="handleLogout(close)"
+                                >
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    {{ $t('auth.sign_out') }}
+                                </button>
+                            </div>
+                        </template>
+                    </UiDropdown>
                 </div>
             </header>
 
