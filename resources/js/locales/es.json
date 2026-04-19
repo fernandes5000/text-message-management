@@ -115,6 +115,7 @@
     },
     "settings": {
         "account": "Configuración de Cuenta",
+        "accounts": "Cuentas",
         "members": "Miembros del Equipo",
         "language": "Idioma",
         "theme": "Tema",

@@ -115,6 +115,7 @@
     },
     "settings": {
         "account": "Account Settings",
+        "accounts": "Accounts",
         "members": "Team Members",
         "language": "Language",
         "theme": "Theme",
