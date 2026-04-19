@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <div class="flex h-screen bg-gray-50 dark:bg-gray-950">
         <!-- Sidebar -->
         <aside class="flex w-48 flex-shrink-0 flex-col bg-gray-900 dark:bg-gray-950">
             <!-- Logo -->
@@ -32,7 +32,7 @@
         </aside>
 
         <!-- Main content -->
-        <div class="flex flex-1 flex-col overflow-hidden">
+        <div class="flex min-h-0 flex-1 flex-col">
             <!-- Top bar -->
             <header class="flex h-14 items-center justify-between border-b bg-white px-6 dark:bg-gray-900">
                 <!-- Search placeholder -->
@@ -52,9 +52,10 @@
 
                     <!-- Account switcher -->
                     <UiDropdown align="right" width="sm">
-                        <template #trigger="{ open }">
+                        <template #trigger="{ open, toggle }">
                             <button
                                 class="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                                @click="toggle"
                             >
                                 {{ auth.organization?.name }}
                                 <svg
@@ -136,9 +137,14 @@
             </header>
 
             <!-- Demo notice banner -->
-            <div class="flex items-center justify-center gap-2 bg-primary-600 px-4 py-1 text-xs text-white">
-                <span class="font-semibold">{{ $t('app.demo_badge') }}</span>
-                <span>{{ $t('app.demo_notice') }}</span>
+            <div class="flex items-center justify-center gap-2 border-b border-amber-300/40 bg-amber-50 px-4 py-2 dark:border-amber-700/40 dark:bg-amber-950/40">
+                <svg class="h-3.5 w-3.5 flex-shrink-0 text-amber-500 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-xs text-amber-700 dark:text-amber-300">
+                    <span class="font-semibold">{{ $t('app.demo_badge') }}:</span>
+                    {{ $t('app.demo_notice') }}
+                </p>
             </div>
 
             <!-- Page content -->
