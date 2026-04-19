@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\KeywordController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ListSubscriberController;
 use App\Http\Controllers\Api\MessageController;
@@ -36,5 +37,8 @@ Route::prefix('v1')->group(function (): void {
         // Messages — send must be registered before the resource routes
         Route::post('messages/{message}/send', [MessageController::class, 'send']);
         Route::apiResource('messages', MessageController::class);
+
+        // Keywords
+        Route::apiResource('keywords', KeywordController::class);
     });
 });

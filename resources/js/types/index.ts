@@ -63,14 +63,14 @@ export interface Keyword {
     id: number
     organization_id: number
     name: string
-    number: string
+    number: string | null
     status: 'active' | 'archived'
     workflow: KeywordWorkflowStep[]
     aliases: string[]
-    uses_count?: number
-    opt_ins_count?: number
+    uses_count: number
+    opt_ins_count: number
     created_at: string
-    updated_at: string
+    lists?: SubscriberList[]
 }
 
 export interface KeywordWorkflowStep {
