@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             OrganizationSeeder::class,
             SubscriberSeeder::class,
             MessageSeeder::class,
+            KeywordSeeder::class,
         ]);
     }
 }
