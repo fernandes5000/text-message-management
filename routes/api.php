@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ListSubscriberController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,9 @@ Route::prefix('v1')->group(function (): void {
         Route::apiResource('lists', ListController::class);
         Route::post('lists/{list}/subscribers', [ListSubscriberController::class, 'store']);
         Route::delete('lists/{list}/subscribers/{subscriber}', [ListSubscriberController::class, 'destroy']);
+
+        // Messages — send must be registered before the resource routes
+        Route::post('messages/{message}/send', [MessageController::class, 'send']);
+        Route::apiResource('messages', MessageController::class);
     });
 });

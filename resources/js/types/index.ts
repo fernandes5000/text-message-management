@@ -42,18 +42,21 @@ export interface SubscriberList {
 
 export interface Message {
     id: number
-    organization_id: number
-    user_id: number
+    name: string
     body: string
-    type: 'text' | 'email'
-    from_number: string
-    status: 'draft' | 'scheduled' | 'sent' | 'failed'
+    status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed'
+    send_type: 'now' | 'scheduled' | 'recurring'
     scheduled_at: string | null
-    sent_at: string | null
-    recipients_count: number
+    recurrence: string | null
+    from_number: string | null
+    use_header: boolean
+    header: string | null
+    media_url: string | null
+    recipient_count: number
     credits_used: number
+    sent_at: string | null
     created_at: string
-    updated_at: string
+    lists: SubscriberList[]
 }
 
 export interface Keyword {
