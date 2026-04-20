@@ -68,7 +68,7 @@ class MessageController extends Controller
     public function show(Message $message): MessageResource
     {
         $this->authorizeOrg($message);
-        return new MessageResource($message->load('lists'));
+        return new MessageResource($message->load('lists', 'creator'));
     }
 
     public function update(UpdateMessageRequest $request, Message $message): MessageResource

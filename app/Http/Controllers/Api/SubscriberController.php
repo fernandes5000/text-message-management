@@ -21,7 +21,8 @@ class SubscriberController extends Controller
     {
         $org = $request->user()->activeOrganization();
 
-        $query = Subscriber::where('organization_id', $org->id)
+        $query = Subscriber::with('lists')
+            ->where('organization_id', $org->id)
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->status))
             ->when($request->filled('search'), function ($q) use ($request): void {
                 $term = '%' . $request->search . '%';

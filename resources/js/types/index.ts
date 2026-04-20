@@ -26,6 +26,7 @@ export interface Subscriber {
     source: string
     created_at: string
     updated_at: string
+    list_ids?: number[]
 }
 
 export interface SubscriberList {
@@ -57,6 +58,7 @@ export interface Message {
     sent_at: string | null
     created_at: string
     lists: SubscriberList[]
+    creator?: { id: number; name: string }
 }
 
 export interface Keyword {

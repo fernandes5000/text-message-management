@@ -36,9 +36,9 @@ const router = createRouter({
                     component: () => import('@/pages/MessagesPage.vue'),
                 },
                 {
-                    path: 'messages/create',
-                    name: 'messages.create',
-                    component: () => import('@/pages/CreateMessagePage.vue'),
+                    path: 'messages/:id',
+                    name: 'messages.show',
+                    component: () => import('@/pages/MessageDetailPage.vue'),
                 },
                 {
                     path: 'keywords',

@@ -54,7 +54,9 @@
         "search_placeholder": "Buscar tudo...",
         "source": "Origem",
         "page_of": "Página {current} de {total}",
-        "showing_range": "Exibindo {from}–{to} de {total}"
+        "showing_range": "Exibindo {from}–{to} de {total}",
+        "by": "por",
+        "created_by": "Criado por"
     },
     "dashboard": {
         "title": "Painel",

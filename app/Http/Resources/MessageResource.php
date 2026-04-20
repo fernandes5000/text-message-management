@@ -28,6 +28,10 @@ class MessageResource extends JsonResource
             'sent_at'         => $this->sent_at?->toISOString(),
             'created_at'      => $this->created_at->toISOString(),
             'lists'           => $this->whenLoaded('lists', fn () => SubscriberListResource::collection($this->lists)->resolve()),
+            'creator'         => $this->whenLoaded('creator', fn () => [
+                'id'   => $this->creator->id,
+                'name' => $this->creator->name,
+            ]),
         ];
     }
 }

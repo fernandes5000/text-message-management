@@ -286,6 +286,25 @@
                     <option value="opted_out">{{ $t('subscribers.opted_out') }}</option>
                 </select>
             </div>
+            <div v-if="lists.length">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('subscribers.lists') }}</label>
+                <div class="mt-1.5 space-y-1.5 rounded-lg border px-3 py-2 dark:border-gray-700">
+                    <label
+                        v-for="list in lists"
+                        :key="list.id"
+                        class="flex cursor-pointer items-center gap-2 rounded px-1 py-0.5 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                        <input
+                            type="checkbox"
+                            :value="list.id"
+                            v-model="subscriberForm.list_ids"
+                            class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                        />
+                        <span class="flex-1 text-sm text-gray-700 dark:text-gray-300">{{ list.name }}</span>
+                        <span class="text-xs text-gray-400">{{ (list.subscribers_count ?? 0).toLocaleString() }}</span>
+                    </label>
+                </div>
+            </div>
         </form>
         <template #footer>
             <UiButton variant="secondary" @click="showSubscriberModal = false">{{ $t('common.cancel') }}</UiButton>
@@ -419,13 +438,13 @@ async function fetchSubscribers() {
 // ── Create / Edit subscriber ──────────────────────────────────────────────
 const showSubscriberModal = ref(false)
 const editingSubscriber = ref<Subscriber | null>(null)
-const subscriberForm = ref({ first_name: '', last_name: '', phone: '', email: '', status: 'opted_in' })
+const subscriberForm = ref({ first_name: '', last_name: '', phone: '', email: '', status: 'opted_in', list_ids: [] as number[] })
 const formErrors = ref<Record<string, string>>({})
 const saving = ref(false)
 
 function openCreate() {
     editingSubscriber.value = null
-    subscriberForm.value = { first_name: '', last_name: '', phone: '', email: '', status: 'opted_in' }
+    subscriberForm.value = { first_name: '', last_name: '', phone: '', email: '', status: 'opted_in', list_ids: [] }
     formErrors.value = {}
     showSubscriberModal.value = true
 }
@@ -438,6 +457,7 @@ function openEdit(sub: Subscriber) {
         phone: sub.phone,
         email: sub.email ?? '',
         status: sub.status,
+        list_ids: (sub.list_ids ?? []) as number[],
     }
     formErrors.value = {}
     showSubscriberModal.value = true
@@ -447,15 +467,30 @@ async function saveSubscriber() {
     saving.value = true
     formErrors.value = {}
     try {
+        let savedId: number
         if (editingSubscriber.value) {
             await axios.put(`/api/v1/subscribers/${editingSubscriber.value.id}`, subscriberForm.value)
+            savedId = editingSubscriber.value.id
             toast.success('Subscriber updated.')
         } else {
-            await axios.post('/api/v1/subscribers', subscriberForm.value)
+            const { data } = await axios.post('/api/v1/subscribers', subscriberForm.value)
+            savedId = data.id
             toast.success('Subscriber added.')
         }
+
+        // Sync list membership
+        const oldIds: number[] = editingSubscriber.value?.list_ids as number[] ?? []
+        const newIds = subscriberForm.value.list_ids
+        const toAdd    = newIds.filter(id => !oldIds.includes(id))
+        const toRemove = oldIds.filter(id => !newIds.includes(id))
+        await Promise.all([
+            ...toAdd.map(listId => axios.post(`/api/v1/lists/${listId}/subscribers`, { subscriber_id: savedId })),
+            ...toRemove.map(listId => axios.delete(`/api/v1/lists/${listId}/subscribers/${savedId}`)),
+        ])
+
         showSubscriberModal.value = false
         fetchSubscribers()
+        fetchLists()
     } catch (e: unknown) {
         const err = e as { response?: { data?: { errors?: Record<string, string[]> } } }
         const errors = err.response?.data?.errors ?? {}
