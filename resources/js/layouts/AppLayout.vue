@@ -163,7 +163,7 @@
 
             <!-- Page content -->
             <main class="flex-1 overflow-auto p-6">
-                <RouterView />
+                <RouterView :key="auth.organization?.id" />
             </main>
         </div>
     </div>

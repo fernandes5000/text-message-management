@@ -20,6 +20,7 @@ class SubscriberResource extends JsonResource
             'status' => $this->status,
             'source' => $this->source,
             'created_at' => $this->created_at,
+            'list_ids' => $this->whenLoaded('lists', fn () => $this->lists->pluck('id')),
         ];
     }
 }

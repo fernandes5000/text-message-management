@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\IntegrationController;
@@ -25,6 +26,7 @@ Route::prefix('v1')->group(function (): void {
     });
 
     Route::middleware('auth:sanctum')->group(function (): void {
+        Route::get('dashboard', DashboardController::class);
         Route::get('accounts', [AccountController::class, 'index']);
         Route::post('accounts/switch/{organization}', [AccountController::class, 'switch']);
 

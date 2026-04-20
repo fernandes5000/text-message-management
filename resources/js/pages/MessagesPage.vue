@@ -87,7 +87,10 @@
                         class="hover:bg-gray-50 dark:hover:bg-gray-700/40"
                     >
                         <td class="px-4 py-3">
-                            <div class="font-medium text-gray-900 dark:text-white">{{ msg.name }}</div>
+                            <RouterLink
+                                :to="{ name: 'messages.show', params: { id: msg.id } }"
+                                class="font-medium text-gray-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
+                            >{{ msg.name }}</RouterLink>
                             <div class="mt-0.5 max-w-xs truncate text-xs text-gray-500 dark:text-gray-400">{{ msg.body }}</div>
                         </td>
                         <td class="px-4 py-3">
@@ -367,6 +370,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import axios from 'axios'
 import type { Message, SubscriberList } from '@/types'
 import UiButton from '@/components/ui/UiButton.vue'

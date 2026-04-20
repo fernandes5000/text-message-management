@@ -54,7 +54,9 @@
         "search_placeholder": "Search everything...",
         "source": "Source",
         "page_of": "Page {current} of {total}",
-        "showing_range": "Showing {from}–{to} of {total}"
+        "showing_range": "Showing {from}–{to} of {total}",
+        "by": "by",
+        "created_by": "Created by"
     },
     "dashboard": {
         "title": "Dashboard",

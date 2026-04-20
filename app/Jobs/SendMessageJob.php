@@ -23,16 +23,19 @@ class SendMessageJob implements ShouldQueue
 
     public function handle(): void
     {
-        // Simulate sending: count recipients from attached lists
-        $recipientCount = $this->message->lists()
-            ->withCount('subscribers')
-            ->get()
-            ->sum('subscribers_count');
+        // Collect unique opted-in subscribers across all attached lists, scoped to the org
+        $orgId = $this->message->organization_id;
 
-        // Fallback so a message without lists still shows a plausible number
-        if ($recipientCount === 0) {
-            $recipientCount = rand(50, 500);
-        }
+        $subscribers = \App\Models\Subscriber::query()
+            ->where('organization_id', $orgId)
+            ->where('status', 'opted_in')
+            ->whereHas('lists', fn ($q) => $q->whereIn(
+                'lists.id',
+                $this->message->lists()->pluck('lists.id')
+            ))
+            ->get();
+
+        $recipientCount = $subscribers->count();
 
         $this->message->update([
             'status'          => 'sent',
@@ -41,9 +44,13 @@ class SendMessageJob implements ShouldQueue
             'credits_used'    => $recipientCount,
         ]);
 
-        // Notify via Mailhog
-        $adminEmail = config('mail.from.address', 'admin@tmm.test');
-        Mail::to($adminEmail)->send(new MessageSentMail($this->message->fresh() ?? $this->message));
+        $message = $this->message->fresh() ?? $this->message;
+
+        // Send one simulated SMS email per subscriber
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email ?? config('mail.from.address'))
+                ->send(new MessageSentMail($message, $subscriber));
+        }
     }
 
     public function failed(\Throwable $e): void
