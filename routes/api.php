@@ -29,6 +29,11 @@ Route::prefix('v1')->group(function (): void {
         Route::get('dashboard', DashboardController::class);
         Route::get('accounts', [AccountController::class, 'index']);
         Route::post('accounts/switch/{organization}', [AccountController::class, 'switch']);
+        Route::get('account/settings', [AccountController::class, 'settings']);
+        Route::put('account/settings', [AccountController::class, 'updateSettings']);
+        Route::get('account/members', [AccountController::class, 'members']);
+        Route::post('account/members', [AccountController::class, 'inviteMember']);
+        Route::delete('account/members/{user}', [AccountController::class, 'removeMember']);
 
         // Subscribers — import must be registered before the resource routes
         Route::post('subscribers/import', [SubscriberController::class, 'import']);

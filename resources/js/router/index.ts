@@ -60,6 +60,11 @@ const router = createRouter({
                     name: 'integrations',
                     component: () => import('@/pages/IntegrationsPage.vue'),
                 },
+                {
+                    path: 'settings',
+                    name: 'settings',
+                    component: () => import('@/pages/SettingsPage.vue'),
+                },
             ],
         },
         {

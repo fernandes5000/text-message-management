@@ -16,7 +16,8 @@ A full-featured, multi-tenant text message management platform for organizations
 - **Inbox** — Real-time two-way conversation management powered by WebSockets (Laravel Reverb)
 - **Polls** — Create polls and attach them to messages
 - **Integrations** — Simulated third-party integrations (Planning Center, Salesforce, Zapier)
-- **Multi-account** — Sub-accounts with independent subscriber bases and messaging
+- **Multi-account** — Sub-accounts with independent subscriber bases and messaging; switch between accounts from the header
+- **Account Settings** — Edit organization name and default number, view credits, manage team members (invite, role badges, remove)
 - **Internationalization** — English (default), Brazilian Portuguese, and Spanish
 - **Dark / Light mode** — User-toggleable theme, persisted in localStorage
 
@@ -187,7 +188,7 @@ The database seeder populates realistic demo data:
 - **6–10 lists** per organization (Volunteers, Attended in last 6mo, Parents of Youth, etc.)
 - **~15 keywords** (active and archived) with multi-step workflows
 - **~50 messages** (sent, scheduled, and draft)
-- **~20 inbox conversations** with inbound and outbound messages
+- **~20 inbox conversations** with inbound and outbound messages per organization
 - **5 polls** per organization with realistic response distributions
 - **5 mock integrations** per organization (Planning Center, Salesforce, Zapier, Mailchimp, HubSpot)
 - **6 sub-accounts** (College Ministry, Easthill Campus, Guest Assimilation, Jordan's Ministry, Main Campus, Pastor Stephen)
