@@ -20,6 +20,7 @@ A full-featured, multi-tenant text message management platform for organizations
 - **Account Settings** — Edit organization name and default number, view credits, manage team members (invite, role badges, remove)
 - **Internationalization** — English (default), Brazilian Portuguese, and Spanish
 - **Dark / Light mode** — User-toggleable theme, persisted in localStorage
+- **Responsive layout** — Mobile-friendly sidebar with hamburger drawer, adaptive header controls
 
 ---
 

@@ -138,7 +138,19 @@
         "recurrence_weekly": "Semanal",
         "recurrence_monthly": "Mensual",
         "preview_placeholder": "Vista previa del mensaje...",
-        "edit": "Editar Mensaje"
+        "edit": "Editar Mensaje",
+        "timeline": "Línea de Tiempo del Mensaje",
+        "outgoing_texts": "Textos Enviados",
+        "replies": "Respuestas",
+        "opt_outs": "Bajas",
+        "delivered": "Entregado",
+        "send_success": "¡Mensaje enviado!",
+        "send_error": "Error al enviar el mensaje.",
+        "draft_saved": "Borrador guardado.",
+        "saved": "Mensaje guardado.",
+        "save_error": "Algo salió mal. Inténtalo de nuevo.",
+        "delete_success": "Mensaje eliminado.",
+        "delete_error": "Error al eliminar el mensaje."
     },
     "keywords": {
         "title": "Palabras clave",
@@ -176,7 +188,17 @@
         "workflow_subtitle": "Estos pasos se ejecutan automáticamente cuando alguien envía esta palabra clave.",
         "add_step": "Agregar Paso",
         "archive": "Archivar",
-        "unarchive": "Desarchivar"
+        "unarchive": "Desarchivar",
+        "created": "Palabra clave creada.",
+        "create_error": "Error al crear la palabra clave.",
+        "updated": "Palabra clave actualizada.",
+        "update_error": "Error al actualizar la palabra clave.",
+        "deleted": "Palabra clave eliminada.",
+        "delete_error": "Error al eliminar la palabra clave.",
+        "workflow_saved": "Flujo guardado.",
+        "workflow_save_error": "Error al guardar el flujo.",
+        "settings_saved": "Configuración guardada.",
+        "settings_save_error": "Error al guardar la configuración."
     },
     "inbox": {
         "title": "Bandeja de Entrada",
@@ -190,7 +212,8 @@
         "search": "Buscar en bandeja",
         "load_more": "Cargar más",
         "select_conversation": "Selecciona una conversación para comenzar",
-        "ctrl_enter_hint": "Ctrl+Enter para enviar"
+        "ctrl_enter_hint": "Ctrl+Enter para enviar",
+        "reply_error": "Error al enviar la respuesta."
     },
     "polls": {
         "title": "Encuestas",
@@ -205,7 +228,12 @@
         "inactive": "Inactiva",
         "total_responses": "Total de Respuestas",
         "response_breakdown": "Distribución de Respuestas",
-        "delete_confirm": "¿Eliminar esta encuesta y todas sus respuestas?"
+        "delete_confirm": "¿Eliminar esta encuesta y todas sus respuestas?",
+        "created": "Encuesta creada.",
+        "create_error": "Error al crear la encuesta.",
+        "load_error": "Error al cargar la encuesta.",
+        "deleted": "Encuesta eliminada.",
+        "delete_error": "Error al eliminar la encuesta."
     },
     "integrations": {
         "title": "Integraciones",
@@ -228,7 +256,16 @@
             "zapier": "Conecta TMM a más de 5.000 aplicaciones con flujos de trabajo automatizados vía Zapier.",
             "mailchimp": "Sincroniza listas de suscriptores entre TMM y tu audiencia de Mailchimp.",
             "hubspot": "Envía contactos y datos de participación al pipeline de tu CRM HubSpot."
-        }
+        },
+        "sync_direction": "Dirección de Sincronización",
+        "sync_two_way": "Sincronización bidireccional",
+        "sync_import_only": "Solo importar",
+        "sync_export_only": "Solo exportar",
+        "config_demo_note": "Los cambios de configuración no se guardan en este entorno de demostración.",
+        "connect_success": "{name} conectado.",
+        "connect_error": "Error al conectar.",
+        "disconnect_success": "{name} desconectado.",
+        "disconnect_error": "Error al desconectar."
     },
     "settings": {
         "account": "Configuración de Cuenta",
