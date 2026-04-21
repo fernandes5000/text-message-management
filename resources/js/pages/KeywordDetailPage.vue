@@ -363,9 +363,9 @@ async function saveWorkflow() {
             workflow: workflow.value,
         })
         keyword.value = res.data
-        toast.success('Workflow saved.')
+        toast.success(t('keywords.workflow_saved'))
     } catch {
-        toast.error('Failed to save workflow.')
+        toast.error(t('keywords.workflow_save_error'))
     } finally {
         saving.value = false
     }
@@ -389,10 +389,10 @@ async function saveSettings() {
             list_ids: settings.value.list_ids,
         })
         keyword.value = res.data
-        toast.success('Settings saved.')
+        toast.success(t('keywords.settings_saved'))
         openSettings.value = false
     } catch {
-        toast.error('Failed to save settings.')
+        toast.error(t('keywords.settings_save_error'))
     } finally {
         saving.value = false
     }

@@ -97,17 +97,17 @@
             </div>
 
             <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Sync Direction</label>
+                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t('integrations.sync_direction') }}</label>
                 <select class="block w-full rounded-md border px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                    <option>Two-way sync</option>
-                    <option>Import only</option>
-                    <option>Export only</option>
+                    <option>{{ $t('integrations.sync_two_way') }}</option>
+                    <option>{{ $t('integrations.sync_import_only') }}</option>
+                    <option>{{ $t('integrations.sync_export_only') }}</option>
                 </select>
             </div>
 
             <div class="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-700/50 dark:bg-amber-900/20">
                 <p class="text-xs text-amber-700 dark:text-amber-300">
-                    <strong>Demo:</strong> Configuration changes are not persisted in this demo environment.
+                    <strong>{{ $t('app.demo_badge') }}:</strong> {{ $t('integrations.config_demo_note') }}
                 </p>
             </div>
 
@@ -155,9 +155,9 @@ async function connect(integration: Integration) {
     try {
         const res = await axios.post(`/api/v1/integrations/${integration.id}/connect`)
         updateInList(res.data)
-        toast.success(`${t(`integrations.names.${integration.type}`)} connected.`)
+        toast.success(t('integrations.connect_success', { name: t(`integrations.names.${integration.type}`) }))
     } catch {
-        toast.error('Failed to connect.')
+        toast.error(t('integrations.connect_error'))
     } finally {
         toggling.value = null
     }
@@ -169,9 +169,9 @@ async function disconnect(integration: Integration) {
         const res = await axios.post(`/api/v1/integrations/${integration.id}/disconnect`)
         updateInList(res.data)
         showConfigure.value = false
-        toast.success(`${t(`integrations.names.${integration.type}`)} disconnected.`)
+        toast.success(t('integrations.disconnect_success', { name: t(`integrations.names.${integration.type}`) }))
     } catch {
-        toast.error('Failed to disconnect.')
+        toast.error(t('integrations.disconnect_error'))
     } finally {
         toggling.value = null
     }

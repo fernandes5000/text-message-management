@@ -322,11 +322,11 @@ async function createKeyword() {
             number:  form.value.number || null,
             aliases: form.value.aliases,
         })
-        toast.success('Keyword created.')
+        toast.success(t('keywords.created'))
         modalOpen.value = false
         fetchKeywords()
     } catch (e: any) {
-        toast.error(e.response?.data?.message ?? 'Failed to create keyword.')
+        toast.error(e.response?.data?.message ?? t('keywords.create_error'))
     } finally {
         saving.value = false
     }
@@ -337,10 +337,10 @@ async function toggleArchive(kw: Keyword) {
         await axios.put(`/api/v1/keywords/${kw.id}`, {
             status: kw.status === 'active' ? 'archived' : 'active',
         })
-        toast.success('Keyword updated.')
+        toast.success(t('keywords.updated'))
         fetchKeywords()
     } catch {
-        toast.error('Failed to update keyword.')
+        toast.error(t('keywords.update_error'))
     }
 }
 
@@ -348,10 +348,10 @@ async function deleteKeyword(kw: Keyword) {
     if (!confirm(t('common.confirm_delete'))) return
     try {
         await axios.delete(`/api/v1/keywords/${kw.id}`)
-        toast.success('Keyword deleted.')
+        toast.success(t('keywords.deleted'))
         fetchKeywords()
     } catch {
-        toast.error('Failed to delete keyword.')
+        toast.error(t('keywords.delete_error'))
     }
 }
 

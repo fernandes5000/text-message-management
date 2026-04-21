@@ -82,7 +82,7 @@
                 <!-- Delivery timeline chart (sent messages only) -->
                 <div v-if="message.status === 'sent'" class="rounded-lg border bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
                     <div class="mb-3 flex items-baseline justify-between">
-                        <h2 class="font-semibold text-gray-900 dark:text-white">Message Timeline</h2>
+                        <h2 class="font-semibold text-gray-900 dark:text-white">{{ $t('messages.timeline') }}</h2>
                         <span class="text-xs text-gray-400">{{ formatDateTime(message.sent_at) }}</span>
                     </div>
                     <div class="flex gap-6 mb-4">
@@ -90,14 +90,14 @@
                             <p class="text-2xl font-bold text-primary-600">{{ (message.recipient_count ?? 0).toLocaleString() }}</p>
                             <p class="text-xs text-gray-500 flex items-center gap-1">
                                 <span class="inline-block h-2 w-2 rounded-full bg-primary-500"></span>
-                                Outgoing Texts
+                                {{ $t('messages.outgoing_texts') }}
                             </p>
                         </div>
                         <div>
                             <p class="text-2xl font-bold text-blue-500">0</p>
                             <p class="text-xs text-gray-500 flex items-center gap-1">
                                 <span class="inline-block h-2 w-2 rounded-full bg-blue-400"></span>
-                                Replies
+                                {{ $t('messages.replies') }}
                             </p>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <span class="h-2 w-2 rounded-full bg-gray-400" />
-                                Opt-outs
+                                {{ $t('messages.opt_outs') }}
                             </div>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                         </div>
@@ -210,10 +210,10 @@ async function fetchMessage() {
 async function sendNow() {
     try {
         await axios.post(`/api/v1/messages/${message.value!.id}/send`)
-        toast.success('Message sent!')
+        toast.success(t('messages.send_success'))
         await fetchMessage()
     } catch {
-        toast.error('Failed to send message.')
+        toast.error(t('messages.send_error'))
     }
 }
 
@@ -266,7 +266,7 @@ const timelineChartData = computed(() => {
     return {
         labels,
         datasets: [{
-            label: 'Delivered',
+            label: t('messages.delivered'),
             data: values,
             backgroundColor: 'rgba(99,102,241,0.7)',
             borderRadius: 4,

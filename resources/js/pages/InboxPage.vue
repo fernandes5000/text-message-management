@@ -312,7 +312,7 @@ async function sendReply() {
             conversations.value[idx].last_message_at = res.data.sent_at
         }
     } catch {
-        toast.error('Failed to send reply.')
+        toast.error(t('inbox.reply_error'))
     } finally {
         sendingReply.value = false
     }

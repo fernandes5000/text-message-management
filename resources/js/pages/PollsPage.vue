@@ -275,9 +275,9 @@ async function submitCreate() {
         })
         polls.value.unshift(res.data)
         showCreate.value = false
-        toast.success(t('polls.create') + ' — OK')
+        toast.success(t('polls.created'))
     } catch {
-        toast.error('Failed to create poll.')
+        toast.error(t('polls.create_error'))
     } finally {
         saving.value = false
     }
@@ -289,7 +289,7 @@ async function openDetail(poll: Poll) {
         activePoll.value = res.data
         showDetail.value = true
     } catch {
-        toast.error('Failed to load poll.')
+        toast.error(t('polls.load_error'))
     }
 }
 
@@ -298,9 +298,9 @@ async function confirmDelete(poll: Poll) {
     try {
         await axios.delete(`/api/v1/polls/${poll.id}`)
         polls.value = polls.value.filter(p => p.id !== poll.id)
-        toast.success('Poll deleted.')
+        toast.success(t('polls.deleted'))
     } catch {
-        toast.error('Failed to delete poll.')
+        toast.error(t('polls.delete_error'))
     }
 }
 

@@ -1,13 +1,38 @@
 <template>
     <div class="flex h-screen bg-gray-50 dark:bg-gray-950">
+
+        <!-- Mobile sidebar backdrop -->
+        <Transition name="fade">
+            <div
+                v-if="sidebarOpen"
+                class="fixed inset-0 z-20 bg-black/50 lg:hidden"
+                @click="sidebarOpen = false"
+            />
+        </Transition>
+
         <!-- Sidebar -->
-        <aside class="flex w-48 flex-shrink-0 flex-col bg-gray-900 dark:bg-gray-950">
-            <!-- Logo -->
-            <div class="flex h-14 items-center px-4">
-                <span class="text-lg font-bold text-white">TMM</span>
-                <span class="ml-2 rounded bg-primary-600 px-1.5 py-0.5 text-xs font-semibold text-white">
-                    {{ $t('app.demo_badge') }}
-                </span>
+        <aside
+            :class="[
+                'fixed inset-y-0 left-0 z-30 flex w-52 flex-shrink-0 flex-col bg-gray-900 dark:bg-gray-950 transition-transform duration-200 lg:static lg:translate-x-0',
+                sidebarOpen ? 'translate-x-0' : '-translate-x-full',
+            ]"
+        >
+            <!-- Logo + close button (mobile) -->
+            <div class="flex h-14 items-center justify-between px-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg font-bold text-white">TMM</span>
+                    <span class="rounded bg-primary-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                        {{ $t('app.demo_badge') }}
+                    </span>
+                </div>
+                <button
+                    class="rounded p-1 text-gray-400 hover:text-white lg:hidden"
+                    @click="sidebarOpen = false"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Navigation -->
@@ -22,6 +47,7 @@
                             ? 'bg-gray-800 text-white'
                             : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                     ]"
+                    @click="sidebarOpen = false"
                 >
                     <svg class="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon" />
@@ -32,21 +58,33 @@
         </aside>
 
         <!-- Main content -->
-        <div class="flex min-h-0 flex-1 flex-col">
+        <div class="flex min-h-0 flex-1 flex-col lg:pl-0">
             <!-- Top bar -->
-            <header class="flex h-14 items-center justify-between border-b bg-white px-6 dark:bg-gray-900">
-                <!-- Search placeholder -->
-                <div class="flex items-center gap-2 rounded-md border bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:border-gray-700 dark:bg-gray-800">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <span>{{ $t('common.search_placeholder') }}</span>
-                    <kbd class="rounded border px-1 text-xs dark:border-gray-600">⌘K</kbd>
+            <header class="flex h-14 flex-shrink-0 items-center justify-between border-b bg-white px-4 dark:bg-gray-900 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <!-- Hamburger (mobile only) -->
+                    <button
+                        class="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"
+                        @click="sidebarOpen = true"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
+                    <!-- Search placeholder (hidden on very small screens) -->
+                    <div class="hidden items-center gap-2 rounded-md border bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:border-gray-700 dark:bg-gray-800 sm:flex">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span>{{ $t('common.search_placeholder') }}</span>
+                        <kbd class="rounded border px-1 text-xs dark:border-gray-600">⌘K</kbd>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <!-- Credits -->
-                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Credits (hidden on xs) -->
+                    <span class="hidden text-sm text-gray-600 dark:text-gray-400 sm:block">
                         {{ $t('common.credits') }}: <strong>{{ auth.organization?.credits?.toLocaleString() ?? '—' }}</strong>
                     </span>
 
@@ -54,12 +92,12 @@
                     <UiDropdown align="right" width="sm">
                         <template #trigger="{ open, toggle }">
                             <button
-                                class="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                                class="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 sm:gap-2 sm:px-3"
                                 @click="toggle"
                             >
-                                {{ auth.organization?.name }}
+                                <span class="max-w-[100px] truncate sm:max-w-[160px]">{{ auth.organization?.name }}</span>
                                 <svg
-                                    class="h-4 w-4 transition-transform"
+                                    class="h-4 w-4 flex-shrink-0 transition-transform"
                                     :class="open ? 'rotate-180' : ''"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 >
@@ -89,7 +127,6 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
                                 </button>
-
                             </div>
                         </template>
                     </UiDropdown>
@@ -107,10 +144,10 @@
                         </svg>
                     </button>
 
-                    <!-- Language selector -->
+                    <!-- Language selector (hidden on xs) -->
                     <select
                         v-model="currentLocale"
-                        class="rounded-md border bg-transparent px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-300"
+                        class="hidden rounded-md border bg-transparent px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-300 sm:block"
                         @change="changeLocale"
                     >
                         <option value="en">EN</option>
@@ -134,6 +171,19 @@
                                 <div class="px-3 py-2 border-b border-gray-100 dark:border-gray-700">
                                     <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ auth.user?.name }}</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ auth.user?.email }}</p>
+                                </div>
+                                <!-- Language selector (mobile, inside dropdown) -->
+                                <div class="flex items-center gap-2 px-3 py-2 sm:hidden">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $t('settings.language') }}:</span>
+                                    <select
+                                        v-model="currentLocale"
+                                        class="flex-1 rounded border bg-transparent px-1 py-0.5 text-xs dark:border-gray-600 dark:text-gray-300"
+                                        @change="changeLocale"
+                                    >
+                                        <option value="en">EN</option>
+                                        <option value="pt-BR">PT</option>
+                                        <option value="es">ES</option>
+                                    </select>
                                 </div>
                                 <RouterLink
                                     to="/settings"
@@ -173,7 +223,7 @@
             </div>
 
             <!-- Page content -->
-            <main class="flex-1 overflow-auto p-6">
+            <main class="flex-1 overflow-auto p-4 sm:p-6">
                 <RouterView :key="auth.organization?.id" />
             </main>
         </div>
@@ -193,8 +243,8 @@ const route = useRoute()
 const router = useRouter()
 
 const currentLocale = ref(locale.value)
-
 const isDark = ref(document.documentElement.classList.contains('dark'))
+const sidebarOpen = ref(false)
 
 const userInitials = computed(() => {
     if (!auth.user) return '?'
@@ -253,3 +303,14 @@ async function handleLogout(close: () => void) {
     router.push('/login')
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.15s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

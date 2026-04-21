@@ -533,12 +533,12 @@ async function submit(action: 'draft' | 'save' | 'send') {
             await axios.post(`/api/v1/messages/${saved.id}/send`)
         }
 
-        const msg = action === 'draft' ? 'Draft saved.' : action === 'send' ? 'Message sent!' : 'Message saved.'
+        const msg = action === 'draft' ? t('messages.draft_saved') : action === 'send' ? t('messages.send_success') : t('messages.saved')
         toast.success(msg)
         composerOpen.value = false
         fetchMessages()
     } catch {
-        toast.error('Something went wrong. Please try again.')
+        toast.error(t('messages.save_error'))
     } finally {
         saving.value = false
     }
@@ -547,10 +547,10 @@ async function submit(action: 'draft' | 'save' | 'send') {
 async function sendNow(msg: Message) {
     try {
         await axios.post(`/api/v1/messages/${msg.id}/send`)
-        toast.success('Message queued for sending!')
+        toast.success(t('messages.send_success'))
         fetchMessages()
     } catch {
-        toast.error('Failed to send message.')
+        toast.error(t('messages.send_error'))
     }
 }
 
@@ -558,10 +558,10 @@ async function deleteMessage(msg: Message) {
     if (!confirm(t('common.confirm_delete'))) return
     try {
         await axios.delete(`/api/v1/messages/${msg.id}`)
-        toast.success('Message deleted.')
+        toast.success(t('messages.delete_success'))
         fetchMessages()
     } catch {
-        toast.error('Failed to delete message.')
+        toast.error(t('messages.delete_error'))
     }
 }
 
