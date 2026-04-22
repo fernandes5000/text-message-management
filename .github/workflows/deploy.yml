@@ -88,24 +88,24 @@ jobs:
 
             # 5. Composer install (includes dev deps for Faker used in demo seeders)
             docker compose -f docker-compose.prod.yml exec -T app \
-              composer install --optimize-autoloader --no-interaction
+              composer install --optimize-autoloader --no-interaction </dev/null
 
             # 6. Build frontend assets (VITE_ vars are read from .env at build time)
             docker compose -f docker-compose.prod.yml exec -T app \
-              bash -c "rm -rf public/build && npm ci && npx vite build"
+              bash -c "rm -rf public/build && npm ci && npx vite build" </dev/null
 
             # 7. Database migrations
             docker compose -f docker-compose.prod.yml exec -T app \
-              php artisan migrate --force
+              php artisan migrate --force </dev/null
 
             # 8. Laravel optimization
-            docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear
-            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
-            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
-            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear </dev/null
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache </dev/null
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache </dev/null
+            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache </dev/null
 
             # 9. Storage link
-            docker compose -f docker-compose.prod.yml exec -T app php artisan storage:link || true
+            docker compose -f docker-compose.prod.yml exec -T app php artisan storage:link </dev/null || true
 
             # 10. Cleanup
             docker image prune -f || true
