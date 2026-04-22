@@ -28,12 +28,14 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "Host ${{ secrets.SERVER_HOST }}" >> ~/.ssh/config
-          echo "  ProxyCommand env CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }} cloudflared access ssh --hostname %h" >> ~/.ssh/config
+          echo "  ProxyCommand cloudflared access ssh --hostname %h --service-token-id ${{ secrets.CF_ACCESS_CLIENT_ID }} --service-token-secret ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
           echo "  User ${{ secrets.SERVER_USER }}" >> ~/.ssh/config
 
       - name: Deploy over SSH
         env:
+          CLOUDFLARE_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
