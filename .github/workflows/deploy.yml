@@ -1,0 +1,115 @@
+name: Deploy TMM to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Install cloudflared
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
+
+      - name: Configure SSH via Cloudflare Tunnel
+        run: |
+          mkdir -p ~/.ssh
+          echo "Host ${{ secrets.SERVER_HOST }}" >> ~/.ssh/config
+          echo "  ProxyCommand cloudflared access ssh --hostname %h --service-token-id ${{ secrets.CF_ACCESS_CLIENT_ID }} --service-token-secret ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          echo "  User ${{ secrets.SERVER_USER }}" >> ~/.ssh/config
+
+      - name: Deploy over SSH
+        env:
+          CLOUDFLARE_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            set -uxo pipefail
+
+            DIR_PATH="/opt/docker/tmm"
+            BRANCH="main"
+            ENV_B64="${{ secrets.TMM_ENV_PROD_BASE64 }}"
+            GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+
+            export COMPOSE_PROJECT_NAME="tmm_prod"
+
+            echo "=== Deploying TMM to $DIR_PATH (branch: $BRANCH) ==="
+
+            # 1. Clone or update repository
+            if [ ! -d "$DIR_PATH/.git" ]; then
+              echo "First deploy — cloning repository..."
+              sudo rm -rf "$DIR_PATH"
+              git clone -b "$BRANCH" "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$DIR_PATH"
+              cd "$DIR_PATH"
+            else
+              echo "Updating existing repository..."
+              cd "$DIR_PATH"
+              git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+              sudo git clean -fdx --exclude=".env" --exclude="storage/"
+              sudo git reset --hard
+              git fetch --all --prune --quiet
+              git checkout "$BRANCH" --force
+              git reset --hard "origin/$BRANCH"
+              sudo chown -R $USER:$USER "$DIR_PATH"
+            fi
+
+            # 2. Write .env
+            echo "$ENV_B64" | base64 -d > .env
+
+            # 3. Storage directories and permissions (www-data = UID 33 in php:8.4-fpm)
+            mkdir -p storage/framework/{cache,data,sessions,views} storage/logs bootstrap/cache
+            sudo chown -R 33:33 storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
+
+            # 4. Rebuild and start containers
+            docker compose -f docker-compose.prod.yml down --remove-orphans --timeout 30 || true
+            docker compose -f docker-compose.prod.yml up -d --build --force-recreate
+
+            echo "=== Waiting for containers to be ready ==="
+            sleep 15
+
+            # 5. Composer install (no dev dependencies)
+            docker compose -f docker-compose.prod.yml exec -T app \
+              composer install --optimize-autoloader --no-dev --no-interaction
+
+            # 6. Build frontend assets (VITE_ vars are read from .env at build time)
+            docker compose -f docker-compose.prod.yml exec -T app \
+              bash -c "rm -rf public/build && npm ci && npm run build"
+
+            # 7. Database migrations
+            docker compose -f docker-compose.prod.yml exec -T app \
+              php artisan migrate --force
+
+            # 8. Laravel optimization
+            docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+
+            # 9. Storage link
+            docker compose -f docker-compose.prod.yml exec -T app php artisan storage:link || true
+
+            # 10. Cleanup
+            docker image prune -f || true
+
+            echo "=================================================="
+            echo "   DEPLOY COMPLETED SUCCESSFULLY!"
+            echo "   https://tmm.engineer.ninja"
+            echo "=================================================="
+          EOF
