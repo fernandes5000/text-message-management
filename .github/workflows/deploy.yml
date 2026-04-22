@@ -84,9 +84,9 @@ jobs:
             echo "=== Waiting for containers to be ready ==="
             sleep 15
 
-            # 5. Composer install (no dev dependencies)
+            # 5. Composer install (includes dev deps for Faker used in demo seeders)
             docker compose -f docker-compose.prod.yml exec -T app \
-              composer install --optimize-autoloader --no-dev --no-interaction
+              composer install --optimize-autoloader --no-interaction
 
             # 6. Build frontend assets (VITE_ vars are read from .env at build time)
             docker compose -f docker-compose.prod.yml exec -T app \
