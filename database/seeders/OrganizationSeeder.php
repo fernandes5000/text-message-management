@@ -56,7 +56,7 @@ class OrganizationSeeder extends Seeder
                 ['name' => $name, 'parent_id' => $main->id],
                 [
                     'default_number' => '97000',
-                    'credits' => fake()->numberBetween(500, 2000),
+                    'credits' => rand(500, 2000),
                 ]
             );
 
