@@ -28,6 +28,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/custom.ini
 
+# Ensure PHP-FPM listens on all interfaces (not just 127.0.0.1)
+RUN echo '[www]' > /usr/local/etc/php-fpm.d/zz-override.conf \
+    && echo 'listen = 0.0.0.0:9000' >> /usr/local/etc/php-fpm.d/zz-override.conf
+
 WORKDIR /var/www/html
 
 EXPOSE 9000
