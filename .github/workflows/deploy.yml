@@ -25,13 +25,10 @@ jobs:
           sudo dpkg -i cloudflared-linux-amd64.deb
 
       - name: Configure SSH via Cloudflare Tunnel
-        env:
-          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
-          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           mkdir -p ~/.ssh
           echo "Host ${{ secrets.SERVER_HOST }}" >> ~/.ssh/config
-          echo "  ProxyCommand cloudflared access ssh --hostname %h" >> ~/.ssh/config
+          echo "  ProxyCommand CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }} cloudflared access ssh --hostname %h" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
           echo "  User ${{ secrets.SERVER_USER }}" >> ~/.ssh/config
 
