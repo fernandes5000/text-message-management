@@ -31,6 +31,8 @@ jobs:
           echo "  ProxyCommand cloudflared access ssh --hostname %h --service-token-id ${{ secrets.CF_ACCESS_CLIENT_ID }} --service-token-secret ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
           echo "  User ${{ secrets.SERVER_USER }}" >> ~/.ssh/config
+          echo "  ServerAliveInterval 30" >> ~/.ssh/config
+          echo "  ServerAliveCountMax 10" >> ~/.ssh/config
 
       - name: Deploy over SSH
         env:
@@ -86,11 +88,11 @@ jobs:
 
             # 5. Composer install (includes dev deps for Faker used in demo seeders)
             docker compose -f docker-compose.prod.yml exec -T app \
-              composer install --optimize-autoloader --no-interaction --quiet
+              composer install --optimize-autoloader --no-interaction
 
             # 6. Build frontend assets (VITE_ vars are read from .env at build time)
             docker compose -f docker-compose.prod.yml exec -T app \
-              bash -c "rm -rf public/build && npm ci --silent && npx vite build"
+              bash -c "rm -rf public/build && npm ci && npx vite build"
 
             # 7. Database migrations
             docker compose -f docker-compose.prod.yml exec -T app \
