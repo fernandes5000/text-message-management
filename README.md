@@ -1,8 +1,32 @@
 # Text Message Management
 
-A full-featured, multi-tenant text message management platform for organizations of any kind. Built as a demo system — messages are simulated via email (Mailhog) instead of real SMS delivery.
+A full-featured, multi-tenant text messaging platform inspired by real-world communication systems used by organizations.
+
+This project was built to explore the architecture, workflows, and technical challenges of modern messaging platforms using Laravel and Vue.
+
+This is just a POC and beta phase.
 
 > **DEMO MODE**: This application does not send real SMS messages. All outbound messages are delivered as emails through Mailhog for demonstration purposes.
+
+---
+
+## Live Demo
+
+* **Demo URL:** https://tmm.engineer.ninja
+* **User:** demo@textmessage.dev
+* **Password:** password
+
+---
+
+## Purpose
+
+This project was created to:
+
+* Explore messaging workflows (outbound, inbound, automation)
+* Simulate real-world SaaS architecture for communication platforms
+* Practice full-stack development using Laravel + Vue + TypeScript
+* Implement multi-tenant behavior and scalable patterns
+* Recreate core features commonly found in production messaging systems
 
 ---
 
@@ -30,8 +54,8 @@ A full-featured, multi-tenant text message management platform for organizations
 
 | Technology | Version |
 |---|---|
-| PHP | 8.4 |
-| Laravel | 12 |
+| PHP | 8.3 |
+| Laravel | 13 |
 | Laravel Reverb | latest (WebSockets) |
 | Laravel Sanctum | latest (API authentication) |
 | MySQL | 8.0 |
